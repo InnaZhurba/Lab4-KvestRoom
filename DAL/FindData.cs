@@ -31,6 +31,15 @@ namespace DAL
                 id = order.Id;
             return id;
         }
+        public int FindLastIdStatus()
+        {
+            BDContext db = new BDContext();
+            List<Status> statuses = db.Statuses.ToList();
+            int id = 0;
+            foreach (Status status in statuses)
+                id = status.Id;
+            return id;
+        }
         public int FindLastIdKvestRoom()
         {
             BDContext db = new BDContext();

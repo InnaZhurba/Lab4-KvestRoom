@@ -8,11 +8,12 @@ namespace DAL
 {
     public class AddData
     {
-        BDContext db = new BDContext();
+        //BDContext db = new BDContext();
         FindData find = new FindData();
         DeleteData delete = new DeleteData();
         public void AddAgeCategories(int Min, int Max)
         {
+            BDContext db = new BDContext();
             using (db)
             {
                 AgeCategory first = new AgeCategory();
@@ -25,6 +26,7 @@ namespace DAL
         }
         public void AddUsersValues(int Min, int Max)
         {
+            BDContext db = new BDContext();
             using (db)
             {
                 UsersValue value = new UsersValue();
@@ -37,6 +39,7 @@ namespace DAL
         }
         public void AddTimeCategories(string day, int start, int finish)
         {
+            BDContext db = new BDContext();
             using (db)
             {
                 TimeCategory value = new TimeCategory();
@@ -50,6 +53,7 @@ namespace DAL
         }
         public void AddSertificate(int SertNum, Boolean shown)
         {
+            BDContext db = new BDContext();
             using (db)
             {
                 Sertificate value = new Sertificate();
@@ -62,19 +66,21 @@ namespace DAL
         }
 
         public int AddOrder(string userName, int IDSertifacate, int usersValue)
-        {           
+        {
+            BDContext db = new BDContext();
             using (db)
             {
                 Order value = new Order();
                 value.UserName = userName;
-                //if (find.FindSertificateID(IDSertifacate))
-                //{
+                if (find.FindSertificateID(IDSertifacate))
+                {
                     value.SertificateId = IDSertifacate;
                     //delete.DeleteSertificate(IDSertifacate);
-                //}
-                //else
-                //    value.SertificateId = 51;//value 1 means that this point is not used as a sertificate number
+                }
+                else
+                    value.SertificateId = 51;//value 1 means that this point is not used as a sertificate number
                 value.NumberOfUsers = usersValue;
+                value.Id = find.FindLastIdOrder() + 1;
 
                 db.Orders.Add(value);
                 db.SaveChanges();
@@ -83,6 +89,7 @@ namespace DAL
         }
         public void AddKvestRoom(string RoomName, int IDUsersValue, int IDAge, int OnePrice)
         {
+            BDContext db = new BDContext();
             using (db)
             {
                 KvestRoom value = new KvestRoom();
@@ -97,12 +104,14 @@ namespace DAL
         }
         public void AddStatus(int IDOrder, int IDTime, int IDKvestRoom)
         {
+            BDContext db = new BDContext();
             using (db)
             {
                 Status value = new Status();
                 value.TimeCategoryId = IDTime;
                 value.OrderId = IDOrder;
                 value.KvestRoomId = IDKvestRoom;
+                value.Id = find.FindLastIdStatus() + 1;
 
                 db.Statuses.Add(value);
                 db.SaveChanges();
